@@ -1,14 +1,12 @@
-
-import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
-import GitHubProvider from 'next-auth/providers/github';
-import type { NextAuthOptions } from 'next-auth';
-import { Admin } from '@/types';
-import prisma from './db';
-
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
+import type { NextAuthOptions } from "next-auth";
+import { AdminType, UserType } from "@/types";
+import prisma from "./db";
 
 export const options: NextAuthOptions = {
-    secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
@@ -31,32 +29,43 @@ export const options: NextAuthOptions = {
           type: "email",
           placeholder: "admin@metedgold.com",
         },
-        // password: {
-        //   label: "Password",
-        //   type: "password",
-        //   placeholder: "AdminPassword",
-        // },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "AdminPassword",
+        },
       },
       async authorize(credentials, req) {
         // Get data from DB using prisma client
-        const adminData :Admin | null = await prisma.admin.findUnique({
+        const adminData: AdminType | null = await prisma.admin.findUnique({
           where: {
             username: credentials?.username,
           },
         });
 
-        if (adminData  && credentials?.email === adminData.email) {
+        if (adminData && credentials?.email === adminData.email) {
           const admin = {
-            id: adminData.id?.toString() || '', // Convert number to string
+            id: adminData.id?.toString() || "", // Convert number to string
             username: adminData.username,
             email: adminData.email,
-            // Include other properties as needed
+            admid: true,
           };
-      
+          // Include other properties as needed
           return admin;
         } else {
-          return null;
+          const userData: UserType | null = await prisma.user.findUnique({
+            where: {
+              email: credentials?.email,
+              contactNumber: credentials?.number,
+              password: credentials?.password,
+              // isActive: credentials?.username,
+            },
+          });
         }
+
+        // } else {
+        //   return null;
+        // }
       },
     }),
   ],

@@ -11,7 +11,7 @@ export default async function Home() {
         <>
             {session ? (
                 <>
-                    <h1>You are login as {session.user?.name}</h1>
+                    <h1>You are login as {session.user?.name} and your email is {session.user?.email}</h1>
                     <Link href="/dashboard"/>
                 </>
             ) : (
