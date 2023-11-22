@@ -75,6 +75,7 @@ export const fetchProducts = async (
         });
 
         console.log({ count, products });
+        
         return { count: count || 0, products };
     } catch (err) {
         console.log(err);

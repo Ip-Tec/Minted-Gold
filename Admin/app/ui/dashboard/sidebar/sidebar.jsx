@@ -13,7 +13,9 @@ import {
   MdHelpCenter,
   MdLogout,
 } from "react-icons/md";
-import {  initAuth  } from "@/app/auth";
+import { initAuth } from "@/app/auth";
+import { options } from "@/utils";
+import { getServerSession } from "next-auth";
 
 const menuItems = [
   {
@@ -78,22 +80,25 @@ const menuItems = [
   // },
 ];
 
-const Sidebar = () => {
+const Sidebar = async () => {
   const { user, signOut } = initAuth();
-  console.log({user, signOut})
+  console.log({ user, signOut });
+  const session = await getServerSession(options);
   return (
     <div className={styles.container}>
       <div className={styles.user}>
-        <Image
+        <MdPeople className={styles.userImage} size={60}/>
+        {/* <Image
           className={styles.userImage}
           src={"/noavatar.png"}
           // src={"/usermg" || "/noavatar.png"}
           alt=""
           width="50"
           height="50"
-        />
+        /> */}
         <div className={styles.userDetail}>
-          <span className={styles.username}>username</span>
+          <span className={styles.username}>{session.user.name}</span>
+          <span className={styles.username}>{session.user.email}</span>
           <span className={styles.userTitle}>Administrator</span>
         </div>
       </div>
@@ -108,11 +113,11 @@ const Sidebar = () => {
         ))}
       </ul>
       <form
-          onSubmit={async (e) => {
-            "use server";
-            e.preventDefault();
-            await signOut(); // Change here
-          }}
+        onSubmit={async (e) => {
+          "use server";
+          e.preventDefault();
+          await signOut(); 
+        }}
       >
         <button className={styles.logout}>
           <MdLogout />

@@ -11,8 +11,10 @@ const ProductsPage = async ({ searchParams }: {searchParams: searchProp}) => {
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const { count, products } = await fetchProducts(q, page);
+  console.log({products})
 
   return (
+    
     <div className={styles.container}>
       <div className={styles.top}>
         <Search placeholder="Search for a product..." />
@@ -20,6 +22,10 @@ const ProductsPage = async ({ searchParams }: {searchParams: searchProp}) => {
           <button className={styles.addButton}>Add New</button>
         </Link>
       </div>
+      {products.length < 1 ? (
+        <p>No products found.</p>
+      ) : (
+        <>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -70,6 +76,8 @@ const ProductsPage = async ({ searchParams }: {searchParams: searchProp}) => {
         </tbody>
       </table>
       <Pagination count={count} />
+      </>
+      )}
     </div>
   );
 };
