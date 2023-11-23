@@ -1,21 +1,23 @@
 // Action User Model
-import { signIn } from "../auth";
+import { initAuth } from "../auth";
 import prisma from "@/utils/db";
-import bcrypt from "bcrypt";
+import { crypt } from "@/app/api/crypt/route";
+
+const { signIn } = initAuth();
 
 export const addUser = async (formData) => {
   const { username, email, password, phone, address, isAdmin, isActive } =
     Object.fromEntries(formData);
 
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const salt = await crypt.genSalt(10);
+    let hashedPassword = await crypt.hash(password, salt);
 
     await prisma.user.create({
       data: {
         username,
         email,
-        password: hashedPassword,
+        password: hashedPassword, // Use the hashedPassword here
         phone,
         address,
         isAdmin,

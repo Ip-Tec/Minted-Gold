@@ -20,8 +20,17 @@ const nextConfig = {
         test: /\.html$/,
         use: "ignore-loader", // Use an appropriate loader or ignore loader if HTML files are not needed
       });
+
+      // Exclude @mapbox/node-pre-gyp from being processed by Webpack
+      config.module.rules.push({
+        test: /@mapbox\/node-pre-gyp/,
+        use: "ignore-loader",
+      });
+
       config.externals = config.externals || {};
-      config.externals['@mapbox/node-pre-gyp'] = '@mapbox/node-pre-gyp';
+      config.externals["@mapbox/node-pre-gyp"] = "@mapbox/node-pre-gyp";
+      config.externals['net'] = 'net';
+      config.externals['fs'] = 'fs';
     }
 
     return config;

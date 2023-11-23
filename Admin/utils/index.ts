@@ -5,7 +5,6 @@ import type { NextAuthOptions } from "next-auth";
 import { AdminType, UserType } from "@/types";
 import prisma from "./db";
 import { generateKey, sendKeyToAdmin } from "./mail";
-import nodemailer from "nodemailer"; // Import nodemailer
 
 export const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
