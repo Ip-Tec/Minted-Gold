@@ -4,9 +4,10 @@
 
 .menu {
   flex: 1;
-  background-color: var(--bgSoft);
   padding: 20px;
+  max-width: 20%;
   min-height: 100vh;
+  background-color: var(--bgSoft);
 }
 
 .content {
@@ -15,21 +16,22 @@
 }
 
 .wrapper {
-  display: flex;
   gap: 20px;
+  display: flex;
   margin-top: 20px;
+  margin-left: 20px;
 }
 
 .main {
   flex: 3;
+  gap: 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
 }
 
 .cards {
-  display: flex;
   gap: 20px;
+  display: flex;
   justify-content: space-between;
 }
 

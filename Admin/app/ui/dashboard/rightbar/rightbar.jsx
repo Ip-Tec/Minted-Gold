@@ -21,7 +21,7 @@ const Rightbar = () => {
           </p>
           <button className={styles.button}>
             <MdPlayCircleFilled />
-            Watch
+            Watch 
           </button>
         </div>
       </div>

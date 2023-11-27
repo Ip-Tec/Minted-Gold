@@ -1,22 +1,30 @@
-import Image from "next/image";
+"user client"
+
 import { options } from "@/utils";
+import Dashboard from "./dashboard/page";
 import { getServerSession } from "next-auth";
-import Link from "next/link";
+import Sidebar from "./ui/dashboard/sidebar/sidebar";
 
 export default async function Home() {
-    const session = await getServerSession(options);
-    console.log({ session, options });
+  const session = await getServerSession(options);
+  console.log({ session, options });
 
-    return (
+  return (
+    <>
+      {session ? (
         <>
-            {session ? (
-                <>
-                    <h1>You are login as {session.user?.name} and your email is {session.user?.email}</h1>
-                    <Link href="/dashboard"/>
-                </>
-            ) : (
-                <h1 className="m-5">You are not Login</h1>
-            )}
+          <div className="flex">
+            <div className="flex-1 p-20 max-w-20 min-h-screen bg-bgSoft">
+              <Sidebar />
+            </div>
+            <div className="flex-4 p-20">
+              <Dashboard />
+            </div>
+          </div>
         </>
-    );
+      ) : (
+        <h1 className="m-5">You are not Login</h1>
+      )}
+    </>
+  );
 }

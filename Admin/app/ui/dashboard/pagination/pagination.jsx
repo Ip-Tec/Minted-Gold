@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import styles from "./pagination.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -19,23 +20,26 @@ const Pagination = ({ count }) => {
   const handleChangePage = (type) => {
     type === "prev"
       ? params.set("page", parseInt(page) - 1)
-      : params.set("page", parseInt(page) + 1);
+      : params.set("page", parseInt(page) + 1); 
     replace(`${pathname}?${params}`);
   };
 
   return (
     <div className={styles.container}>
+      <span>
+        Page {page} of {Math.ceil(count / ITEM_PER_PAGE)}
+      </span>
       <button
         className={styles.button}
         disabled={!hasPrev}
-        onClick={() => handleChangePage("prev")}
+        onClick={() => handleChangePage(page - 1)}
       >
         Previous
       </button>
       <button
         className={styles.button}
         disabled={!hasNext}
-        onClick={() => handleChangePage("next")}
+        onClick={() => handleChangePage(page + 1)}
       >
         Next
       </button>

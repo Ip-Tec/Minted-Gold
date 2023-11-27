@@ -27,6 +27,7 @@ const UsersPage = async ({ searchParams }: {searchParams: searchProp}) => {
           <button className={styles.addButton}>Add New</button>
         </Link>
       </div>
+        <h1>New User</h1>
       <table className={styles.table}>
         <thead>
           <tr>

@@ -122,7 +122,7 @@ const Sidebar = async () => {
         <button className={styles.logout}>
           <MdLogout />
           Logout
-        </button>
+        </button> 
       </form>
     </div>
   );

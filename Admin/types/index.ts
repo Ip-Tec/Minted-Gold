@@ -1,3 +1,4 @@
+// types/index.ts
 import { MouseEventHandler } from "react";
 import { User, Product, Admin } from '@prisma/client';
 

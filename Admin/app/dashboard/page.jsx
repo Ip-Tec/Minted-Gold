@@ -16,7 +16,7 @@ const Dashboard = async () => {
     <div className={styles.wrapper}>
       <div className={styles.main}>
         <div className={styles.cards}>
-          {cards.map((item) => (
+          {await cards.map((item) => (
             <Card item={item} key={item.id} />
           ))}
         </div>

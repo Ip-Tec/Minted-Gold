@@ -10,7 +10,14 @@
   flex-wrap: wrap;
   justify-content: space-between;
 }
-
+.formContainer{
+  display: flex;
+  flex-direction: column;
+}
+.label{
+  display: block;
+  padding: 0.2rem;
+}
 .form input,
 .form textarea,
 .form select {
@@ -23,11 +30,11 @@
 }
 
 .form input, .form select {
-  width: 45%;
+  width: 23rem;
 }
 
 .form textarea{
-  width: 100%;
+  width: 65vw;
 }
 
 .form button{

@@ -12,12 +12,38 @@ const AddProductPage = () => {
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+
+    // Generate previews for the selected files
+    const previews = files.map((file) => URL.createObjectURL(file));
+
+    // Update the state with the selected files and previews
+    setImageFiles((prevFiles) => [...prevFiles, ...files]);
+    setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
+
+    // Update formData.image to an array of file objects
+    setFormData((prevData) => ({
+      ...prevData,
+      image: [...prevData.image, ...files],
+    }));
+  };
+
+  const handleRemoveImage = (index) => {
+    // Remove the selected image and its preview
+    setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setImagePreviews((prevPreviews) =>
+      prevPreviews.filter((_, i) => i !== index)
+    );
+  };
   const [formData, setFormData] = useState({
     title: "",
     price: "",
     stock: "",
-    image: null, // Change to null
+    image: imageFiles, // Change to null
     createdAt: formatDate(new Date()),
     description: "",
   });
@@ -50,11 +76,11 @@ const AddProductPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       // Call addProduct and pass formData
-      await addProduct(formData);
-
+      console.log({ formData });
+      const AP = await addProduct(formData);
+      console.log({ AP });
       // Optionally, you can navigate to another page or show a success message
     } catch (error) {
       // Handle errors, e.g., show an error message
@@ -62,47 +88,17 @@ const AddProductPage = () => {
     }
   };
 
-  const [imageFiles, setImageFiles] = useState([]);
-  const [imagePreviews, setImagePreviews] = useState([]);
-
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-
-    // Update the state with the selected files
-    setImageFiles((prevFiles) => [...prevFiles, ...files]);
-
-    // Generate previews for the selected files
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
-  };
-
-  const handleRemoveImage = (index) => {
-    // Remove the selected image and its preview
-    setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
-    setImagePreviews((prevPreviews) =>
-      prevPreviews.filter((_, i) => i !== index)
-    );
-  };
-
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit} className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         {/* Input for multiple image upload */}
         <div
           style={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
             alignItems: "center",
           }}
         >
-          <input
-            type="file"
-            name="image"
-            onChange={handleImageChange}
-            accept="image/*"
-            multiple
-            required
-          />
           {imagePreviews.map((preview, index) => (
             <div
               key={index}
@@ -142,43 +138,78 @@ const AddProductPage = () => {
               </div>
             </div>
           ))}
+          <div className={styles.formContainer}>
+            <label className={styles.label} htmlFor="image">
+              Product Image
+            </label>
+            <input
+              type="file"
+              name="image"
+              onChange={handleImageChange}
+              accept="image/*"
+              multiple
+              required
+            />
+          </div>
         </div>
         {/* Other input fields */}
-        <input
-          type="text"
-          placeholder="title"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
+        <div className={styles.formContainer}>
+          <label className={styles.label} htmlFor="title">
+            Product name
+          </label>
+          <input
+            type="text"
+            placeholder="title"
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className={styles.formContainer}>
+          <label className={styles.label} htmlFor="price">
+            Price
+          </label>
+          <input
+            type="number"
+            placeholder="price"
+            name="price"
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className={styles.formContainer}>
+          <label className={styles.label} htmlFor="stock">
+            Stock Number
+          </label>
+          <input
+            type="number"
+            placeholder="stock"
+            name="stock"
+            value={formData.stock}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className={styles.formContainer}>
+          <label className={styles.label} htmlFor="description">
+            Description
+          </label>
 
-        <input
-          type="number"
-          placeholder="price"
-          name="price"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          placeholder="stock"
-          name="stock"
-          value={formData.stock}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          required
-          name="description"
-          id="description"
-          rows="16"
-          placeholder="Description"
-          value={formData.description}
-          onChange={handleChange}
-        ></textarea>
-        <button type="submit">Submit</button>
+          <textarea
+            required
+            name="description"
+            id="description"
+            rows="5"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+          ></textarea>
+        </div>
+        <button type="submit" onClick={handleSubmit}>
+          Submit
+        </button>
       </form>
     </div>
   );

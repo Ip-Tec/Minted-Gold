@@ -12,6 +12,7 @@ const SingleProductPage = async ({ params }: { params: ProductProp }) => {
     // Handle the case when the product is null
     return <div>No product found</div>;
   }
+  let URL = await updateProduct();
 
   return (
     <div className={styles.container}>
@@ -22,15 +23,19 @@ const SingleProductPage = async ({ params }: { params: ProductProp }) => {
         {product.title}
       </div>
       <div className={styles.formContainer}>
-        <form action={updateProduct} className={styles.form}>
+        <form action={URL} className={styles.form}>
           <input type="hidden" name="id" value={product.id} />
           <label>Title</label>
           <input type="text" name="title" placeholder={product.title} />
           <label>Price</label>
-          <input type="number" name="price" placeholder={product.price.toString()} />
+          <input
+            type="number"
+            name="price"
+            placeholder={product.price.toString()}
+          />
           <label>Stock</label>
           <input type="number" name="stock" placeholder={product.stock} />
-        
+
           <label>Cat</label>
           <select name="cat" id="cat">
             <option value="kitchen">Kitchen</option>
